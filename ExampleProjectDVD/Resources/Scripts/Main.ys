@@ -1,0 +1,29 @@
+Engine = SirrusEngine()
+require("player")  // Load the "player" module
+
+var screen_width = 1280
+var screen_height = 720
+
+// Initialize Function
+_f init() {
+    // Configure the engine settings
+    Engine->setResolution(screen_width, screen_height)
+    Engine->setTitle("DVD Screen")
+    Engine->setFramerate(60)
+    Engine->setFullscreen(false)
+    
+    // Initialize the "player" module
+    player->initialize()
+}
+
+// Update Function
+_f update() {
+    // Update the "player" module with deltaTime and screen dimensions
+    player->update(Engine->deltaTime(), screen_width, screen_height)
+}
+
+// Render Function
+_f render() {
+    // Draw the sprite from the "player" module on the screen
+    Engine->draw(player.sprite)
+}

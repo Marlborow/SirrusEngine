@@ -1,0 +1,50 @@
+player = {
+    sprite: NewObject(),
+    hspd: 200,
+    yspd: 150,
+    x: 0,
+    y: 0,
+    texture_size: Vec2()
+}
+
+_f player::initialize() {
+    // Initialize the object's starting position, scale, and texture used
+    this.sprite.transform->setPosition(100, 100)
+    this.sprite.transform->setScale(1, 1)
+    this.sprite.texture = "dvd.png"
+    this.texture_size = player.sprite->getTextureSize() // Initialize object_texture_size
+}
+
+var runOnce = false
+
+_f player::update(dt, screen_width, screen_height) {
+    if (!runOnce) {
+        this.x = screen_width / 2  // Start in the middle of the screen
+        this.y = screen_height / 2  // Start in the middle of the screen
+        runOnce = !runOnce
+    }
+    var half_width = this.texture_size.x / 2
+    var half_height = this.texture_size.y / 2
+
+    this.x += this.hspd * dt
+    this.y += this.yspd * dt
+
+	//screen edge collision detection
+    if (this.x - half_width < 0) {
+        this.x = half_width
+        this.hspd = math.abs(this.hspd)
+    } else if (this.x + half_width > screen_width) {
+        this.x = screen_width - half_width
+        this.hspd = -math.abs(this.hspd)
+    }
+
+    if (this.y - half_height < 0) {
+        this.y = half_height
+        this.yspd = math.abs(this.yspd)
+    } else if (this.y + half_height > screen_height) {
+        this.y = screen_height - half_height
+        this.yspd = -math.abs(this.yspd)
+    }
+
+    this.sprite.transform->setPosition(this.x, this.y)
+}
